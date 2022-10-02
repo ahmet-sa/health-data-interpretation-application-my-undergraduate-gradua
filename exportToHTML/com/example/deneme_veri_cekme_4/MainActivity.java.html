@@ -1,0 +1,280 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.deneme_veri_cekme_4</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.Connection</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.DriverManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.ResultSet</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.ResultSetMetaData</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.SQLException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.sql.Statement</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.media.Ringtone</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.media.RingtoneManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Vibrator</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">org.eclipse.paho.android.service.MqttAndroidClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttActionListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttDeliveryToken</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttToken</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttCallback</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttConnectOptions</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttMessage</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.media.RingtoneManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.StrictMode</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">org.eclipse.paho.android.service.MqttAndroidClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttActionListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttDeliveryToken</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.IMqttToken</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttCallback</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttConnectOptions</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.eclipse.paho.client.mqttv3.MqttMessage</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">static </span><span class="s1">String MQTTHOST = </span><span class="s2">&quot;tcp://broker.emqx.io:1883&quot;</span><span class="s0">;</span>
+    <span class="s0">static </span><span class="s1">String USERNAME = </span><span class="s2">&quot;emqx&quot;</span><span class="s0">;</span>
+    <span class="s0">static </span><span class="s1">String PASSWORD = </span><span class="s2">&quot;public&quot;</span><span class="s0">;</span>
+    <span class="s1">String topicStr = </span><span class="s2">&quot;MESSAGE&quot;</span><span class="s0">;</span>
+    <span class="s1">MqttAndroidClient client</span><span class="s0">;</span>
+    <span class="s1">TextView subText</span><span class="s0">;</span>
+    <span class="s1">MqttConnectOptions options</span><span class="s0">;</span>
+
+    <span class="s0">private static final </span><span class="s1">String url=</span><span class="s2">&quot;jdbc:mysql://10.63.196.81/fitbitdatabase&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String user=</span><span class="s2">&quot;test123&quot;</span><span class="s0">;</span>
+    <span class="s0">private static final </span><span class="s1">String pass=</span><span class="s2">&quot;test&quot;</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt; heart= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt; time= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt; heart_yazısız= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt; kıyasla= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">List&lt;Integer&gt; heart_yazısız_int= </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+   <span class="s1">EditText veri</span><span class="s0">;</span>
+<span class="s1">TextView kontrol</span><span class="s0">,</span><span class="s1">risk_sayısı</span><span class="s0">;</span>
+<span class="s1">String metin</span><span class="s0">,</span><span class="s1">b</span><span class="s0">;</span>
+<span class="s0">int </span><span class="s1">risk=</span><span class="s3">0</span><span class="s0">;</span>
+<span class="s0">int </span><span class="s1">say=</span><span class="s3">0</span><span class="s0">,</span><span class="s1">q=</span><span class="s3">0</span><span class="s0">;</span>
+
+
+
+     <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+         <span class="s1">Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)</span><span class="s0">;</span>
+
+
+
+
+         <span class="s1">String clientId = MqttClient.generateClientId()</span><span class="s0">;</span>
+         <span class="s1">client = </span><span class="s0">new </span><span class="s1">MqttAndroidClient(</span><span class="s0">this</span><span class="s1">.getApplicationContext()</span><span class="s0">, </span><span class="s1">MQTTHOST</span><span class="s0">, </span><span class="s1">clientId)</span><span class="s0">;</span>
+         <span class="s1">options = </span><span class="s0">new </span><span class="s1">MqttConnectOptions()</span><span class="s0">;</span>
+         <span class="s1">options.setUserName(USERNAME)</span><span class="s0">;</span>
+         <span class="s1">options.setPassword(PASSWORD.toCharArray())</span><span class="s0">;</span>
+
+
+
+         <span class="s0">try </span><span class="s1">{</span>
+             <span class="s1">IMqttToken token = client.connect(options)</span><span class="s0">;</span>
+             <span class="s1">token.setActionCallback(</span><span class="s0">new </span><span class="s1">IMqttActionListener() {</span>
+                 <span class="s1">@Override</span>
+                 <span class="s0">public void </span><span class="s1">onSuccess(IMqttToken asyncActionToken) {</span>
+                     <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this,</span><span class="s2">&quot;connected&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                     <span class="s1">setSubscruption()</span><span class="s0">;</span>
+                 <span class="s1">}</span>
+
+                 <span class="s1">@Override</span>
+                 <span class="s0">public void </span><span class="s1">onFailure(IMqttToken asyncActionToken</span><span class="s0">, </span><span class="s1">Throwable exception) {</span>
+                     <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this,</span><span class="s2">&quot;connection faild&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+
+
+                 <span class="s1">}</span>
+             <span class="s1">})</span><span class="s0">;</span>
+         <span class="s1">} </span><span class="s0">catch </span><span class="s1">(MqttException e) {</span>
+             <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+         <span class="s1">} client.setCallback(</span><span class="s0">new </span><span class="s1">MqttCallback() {</span>
+             <span class="s1">@Override</span>
+             <span class="s0">public void </span><span class="s1">connectionLost(Throwable cause) {</span>
+
+             <span class="s1">}</span>
+
+             <span class="s1">@Override</span>
+             <span class="s0">public void </span><span class="s1">messageArrived(String topic</span><span class="s0">, </span><span class="s1">MqttMessage message) </span><span class="s0">throws </span><span class="s1">Exception {</span>
+                 <span class="s1">subText.setText(</span><span class="s0">new </span><span class="s1">String(message.getPayload()))</span><span class="s0">;</span>
+
+
+             <span class="s1">}</span>
+
+             <span class="s1">@Override</span>
+             <span class="s0">public void </span><span class="s1">deliveryComplete(IMqttDeliveryToken token) {</span>
+
+             <span class="s1">}</span>
+         <span class="s1">})</span><span class="s0">;</span>
+
+
+
+
+
+
+
+
+
+
+
+         <span class="s1">testDB()</span><span class="s0">;</span>
+
+         <span class="s1">veri = (EditText) findViewById(R.id.editTextPhone2)</span><span class="s0">;</span>
+
+         <span class="s1">kontrol=(TextView) findViewById(R.id.textView3)</span><span class="s0">;</span>
+         <span class="s1">risk_sayısı=(TextView) findViewById(R.id.textView)</span><span class="s0">;</span>
+
+
+         <span class="s1">}</span>
+
+
+
+
+
+
+
+<span class="s0">public  void  </span><span class="s1">bastım(View view){</span>
+    <span class="s1">metin=</span><span class="s2">&quot; &quot;</span><span class="s0">;</span>
+
+    <span class="s1">b=(String)veri.getText().toString()</span><span class="s0">;</span>
+    <span class="s1">say=Integer.parseInt(b)</span><span class="s0">;</span>
+
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i=say*</span><span class="s3">60</span><span class="s0">;</span><span class="s1">i&lt;((say*</span><span class="s3">60</span><span class="s1">)+</span><span class="s3">60</span><span class="s1">)</span><span class="s0">;</span><span class="s1">i++){</span>
+        <span class="s1">metin=metin+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">+heart_yazısız_int</span><span class="s0">;</span>
+
+
+        <span class="s1">}</span>
+
+       <span class="s1">kontrol.setText(metin)</span><span class="s0">;</span>
+
+
+
+<span class="s1">}</span>
+    <span class="s0">public  void </span><span class="s1">karşilaştır(View view) {</span>
+        <span class="s1">risk=</span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s1">q=</span><span class="s3">0</span><span class="s0">;</span>
+
+
+        <span class="s1">String r</span><span class="s0">,</span><span class="s1">n</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">y = </span><span class="s3">90</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">k=</span><span class="s3">30</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; </span><span class="s3">5000 </span><span class="s0">; </span><span class="s1">i++) {</span>
+            <span class="s0">if </span><span class="s1">(heart_yazısız_int.get(i) &gt;= y) {</span>
+                  <span class="s1">risk=risk+</span><span class="s3">1</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">u = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">u&lt; </span><span class="s3">5000 </span><span class="s0">; </span><span class="s1">u++) {</span>
+            <span class="s0">if </span><span class="s1">(heart_yazısız_int.get(u)&lt;= k) {</span>
+                <span class="s1">q=q+</span><span class="s3">1</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+            <span class="s1">n=Integer.toString(q)</span><span class="s0">;</span>
+            <span class="s1">r = Integer.toString(risk)</span><span class="s0">;</span>
+            <span class="s1">risk_sayısı.setText(</span><span class="s2">&quot;üst sınırı aşan &quot;</span><span class="s1">+r+</span><span class="s2">&quot;alt sınırı aşan &quot;</span><span class="s1">+n)</span><span class="s0">;</span>
+
+
+
+
+        <span class="s1">String topic = topicStr</span><span class="s0">;</span>
+        <span class="s1">String message = </span><span class="s2">&quot;üst sınırı aşan &quot;</span><span class="s1">+r+</span><span class="s2">&quot;alt sınırı aşan &quot;</span><span class="s1">+n</span><span class="s0">;</span>
+
+
+        <span class="s0">try</span><span class="s1">{</span>
+            <span class="s1">client.publish(topic</span><span class="s0">, </span><span class="s1">message.getBytes()</span><span class="s0">,</span><span class="s3">0</span><span class="s0">,false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">( MqttException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">setSubscruption(){</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">client.subscribe(topicStr</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">catch </span><span class="s1">(MqttException e){</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+
+
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">testDB(){</span>
+        <span class="s0">try</span><span class="s1">{</span>
+
+            <span class="s1">StrictMode.ThreadPolicy policy=</span>
+                    <span class="s0">new </span><span class="s1">StrictMode.ThreadPolicy.Builder().permitAll().build()</span><span class="s0">;</span>
+            <span class="s1">StrictMode.setThreadPolicy(policy)</span><span class="s0">;</span>
+
+            <span class="s1">Class.forName(</span><span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">Connection con= DriverManager.getConnection(url</span><span class="s0">, </span><span class="s1">user</span><span class="s0">, </span><span class="s1">pass)</span><span class="s0">;</span>
+
+            <span class="s1">String result=</span><span class="s2">&quot;database connection succes </span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s0">;</span>
+            <span class="s1">Statement st=con.createStatement()</span><span class="s0">;</span>
+
+            <span class="s1">ResultSet rs=st.executeQuery(</span><span class="s2">&quot;SELECT * FROM heartratedb&quot;</span><span class="s1">+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+            <span class="s1">ResultSetMetaData rsmd=rs.getMetaData()</span><span class="s0">;</span>
+            <span class="s0">while</span><span class="s1">(rs.next()){</span>
+                <span class="s1">result += rsmd.getColumnName(</span><span class="s3">1</span><span class="s1">)+</span><span class="s2">&quot;:&quot;</span><span class="s1">+rs.getString(</span><span class="s3">1</span><span class="s1">)+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s0">;</span>
+
+
+             <span class="s4">//   heart.add(rsmd.getColumnName(2)+rs.getString(2)+&quot;\n&quot;+&quot;\n&quot;) ;</span>
+                <span class="s1">heart_yazısız_int.add(rs.getInt(</span><span class="s3">2</span><span class="s1">))</span><span class="s0">;</span>
+               <span class="s4">// time.add(rsmd.getColumnName(2)+&quot;:&quot;+rs.getString(2)+&quot;\n&quot;+&quot;\n&quot;) ;</span>
+                <span class="s1">result += rsmd.getColumnName(</span><span class="s3">4</span><span class="s1">)+</span><span class="s2">&quot;:&quot;</span><span class="s1">+rs.getString(</span><span class="s3">4</span><span class="s1">)+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">+</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s0">;</span>
+                <span class="s1">kıyasla.add(</span><span class="s2">&quot;65&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+
+            <span class="s1">}</span>
+
+
+
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(ClassNotFoundException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(SQLException throwables) {</span>
+            <span class="s1">throwables.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
